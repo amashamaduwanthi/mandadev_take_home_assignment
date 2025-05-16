@@ -26,6 +26,10 @@ router.post('/', async (req, res) => {
       return res.status(401).json({ message: 'Invalid email or password' });
     }
     // 4. Generate JWT token
+    const token = jwt.sign(
+        { id: user.id, email: user.email, name: user.name },
+        process.env.SECRET_KEY,
+        { expiresIn: '1h' });
     // 5. Send response
 
     res.status(501).json({ message: 'Login route not implemented yet' });
