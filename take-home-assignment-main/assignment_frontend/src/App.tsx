@@ -4,8 +4,9 @@ import './App.css'
 import AuthLayout from "./components/AuthLayOut.tsx";
 
 import {store} from "./store/store.ts";
-import {SignIn} from "./pages/SignIn.tsx";
+
 import Signup from "./pages/SignUp.tsx";
+import SignIn from "./pages/SignIn.tsx";
 
 function App() {
     const routes=createBrowserRouter([
