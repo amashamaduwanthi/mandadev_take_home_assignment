@@ -31,8 +31,9 @@ router.post('/', async (req, res) => {
         { id: user.id, email: user.email, name: user.name },
         process.env.SECRET_KEY,
         { expiresIn: '1h' });
+    console.log("Generated JWT Token:", token);
     // 5. Send response
-    res.status(200).json({
+    return res.status(200).json({
       message: 'Login successful',
       token,
       user: {
@@ -42,7 +43,7 @@ router.post('/', async (req, res) => {
       }
     });
 
-    res.status(501).json({ message: 'Login route not implemented yet' });
+
   } catch (error) {
     res.status(500).json({ message: 'Error during login', error: error.message });
   }

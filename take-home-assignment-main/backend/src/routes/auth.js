@@ -36,7 +36,7 @@ router.post('/register', async (req, res) => {
             process.env.SECRET_KEY,
             { expiresIn: '1h' }
         );
-
+        console.log("Generated JWT Token:", token);
         // Return response
         res.status(201).json({
             message: 'User registered successfully',
