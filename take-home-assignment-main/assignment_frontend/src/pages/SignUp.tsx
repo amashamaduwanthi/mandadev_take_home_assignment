@@ -1,14 +1,48 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import  { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+
+import { useDispatch } from "react-redux";
+import type {AppDispatch} from "../store/store.ts";
+import type {User} from "../model/User.ts";
+import { registerUser } from "../slice/UserSlice.ts";
 
 export default function Signup() {
+    const navigate = useNavigate();
+    const dispatch = useDispatch<AppDispatch>();
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
     const handleRegister = (e) => {
         e.preventDefault();
-
+        if (!name||!email || !password ) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Validation Error',
+                text: 'All fields are required. Please fill in all the fields before saving.',
+                confirmButtonColor: '#3085d6',
+            });
+            return;
+        }
+        const user: User = { name:name,email: email, password: password };
+        dispatch(registerUser(user)).then(() => {
+            Swal.fire({
+                icon: 'success',
+                title: 'User Registered!',
+                text: 'The User has been successfully Registered.',
+                confirmButtonColor: '#3085d6',
+            }).then(() => {
+                navigate("/SignIn");
+            });
+        }).catch((error) => {
+            console.error('Error adding User: ', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Register Failed',
+                text: 'An error occurred while saving the User. Please try again.',
+            });
+        });
     };
 
     return (
