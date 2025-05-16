@@ -14,6 +14,11 @@ router.post('/', async (req, res) => {
     }
 
     // 2. Check user exists
+    const user = await dbFunctions.findUserByEmail(email);
+
+    if (!user) {
+      return res.status(401).json({ message: 'Invalid email or password' });
+    }
     // 3. Verify password
     // 4. Generate JWT token
     // 5. Send response
