@@ -9,6 +9,10 @@ router.post('/', async (req, res) => {
 
     // TODO: Implement login logic
     // 1. Validate input
+    if (!email || !password) {
+      return res.status(400).json({ message: 'Email and password are required' });
+    }
+
     // 2. Check user exists
     // 3. Verify password
     // 4. Generate JWT token
