@@ -26,7 +26,20 @@ export const registerUser = createAsyncThunk(
     }
 );
 
-
+export const loginUser = createAsyncThunk(
+    'login',
+    async (user: User, { rejectWithValue }) => {
+        try {
+            const response = await api.post('/login', user, { withCredentials: true });
+            return response.data;
+        } catch (err: any) {
+            if (err.response) {
+                return rejectWithValue(err.response.data || "Login failed");
+            }
+            return rejectWithValue("Unexpected error during login");
+        }
+    }
+);
 const userSlice = createSlice({
     name:"users",
     initialState,
@@ -46,6 +59,23 @@ const userSlice = createSlice({
             .addCase(registerUser.rejected,(state, action)=>{
                 state.error = action.payload as string;
             });
+        builder
+            .addCase(loginUser.rejected, (state, action) => {
+                state.error = action.payload as string;
+                state.isAuthenticated = false;
+            })
+
+            .addCase(loginUser.fulfilled, (state, action) => {
+                if (action.payload) {
+                    state.jwt_token = action.payload.accessToken;
+                    state.refresh_token = action.payload.refreshToken;
+                    state.isAuthenticated = true;
+                }
+            })
+
+            .addCase(loginUser.pending,(state, action)=>{
+                state.isAuthenticated = false;
+            })
 
     }
 })

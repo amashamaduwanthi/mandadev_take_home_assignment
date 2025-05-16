@@ -1,14 +1,41 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import Swal from "sweetalert2";
+import type { AppDispatch } from "../store/store.ts";
+import type { User } from "../model/User.ts";
+import { loginUser } from "../slice/UserSlice.ts";
 
 export default function SignIn() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
+    const dispatch = useDispatch<AppDispatch>();
 
     const handleLogIn = (e: React.FormEvent) => {
         e.preventDefault();
+        const user: User = { email, password};
 
+        dispatch(loginUser(user))
+            .unwrap()
+            .then(() => {
+                Swal.fire({
+                    icon: "success",
+                    title: "Login Successful!",
+                    text: "You are successfully logged in!",
+                    confirmButtonColor: "#3085d6",
+                }).then(() => {
+                    navigate("/Dashboard");
+                });
+            })
+            .catch((error) => {
+                console.error("Error Logging in: ", error);
+                Swal.fire({
+                    icon: "error",
+                    title: "Login Failed",
+                    text: error || "An error occurred while logging in. Please try again.",
+                });
+            });
     };
 
     return (
