@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const bcrypt = require('bcrypt');
 const dbFunctions = require('../db/dbFunctions');
 
 // Login route
@@ -20,6 +21,10 @@ router.post('/', async (req, res) => {
       return res.status(401).json({ message: 'Invalid email or password' });
     }
     // 3. Verify password
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ message: 'Invalid email or password' });
+    }
     // 4. Generate JWT token
     // 5. Send response
 
