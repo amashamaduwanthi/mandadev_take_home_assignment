@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const dbFunctions = require('../db/dbFunctions');
 
 // Login route
@@ -31,6 +32,15 @@ router.post('/', async (req, res) => {
         process.env.SECRET_KEY,
         { expiresIn: '1h' });
     // 5. Send response
+    res.status(200).json({
+      message: 'Login successful',
+      token,
+      user: {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+      }
+    });
 
     res.status(501).json({ message: 'Login route not implemented yet' });
   } catch (error) {
