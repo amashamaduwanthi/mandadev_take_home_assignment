@@ -11,17 +11,17 @@ const authMiddleware = (req, res, next) => {
 
     const token = authHeader.split(' ')[1];
 
+    console.log('JWT Secret:', process.env.SECRET_KEY);
+
     try {
-        // 2. Verify token
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-        // 3. Add user info to request object
+        const decoded = jwt.verify(token, process.env.SECRET_KEY);
         req.user = decoded;
-
-        next(); // continue to the next middleware or route
+        next();
     } catch (err) {
-        return res.status(401).json({message: 'Invalid or expired token', error: err.message});
+        console.error('JWT verify error:', err.message);
+        return res.status(401).json({ message: 'Invalid or expired token', error: err.message });
     }
+
 };
 
 module.exports = authMiddleware;

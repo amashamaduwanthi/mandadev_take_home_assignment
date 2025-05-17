@@ -2,7 +2,7 @@ import axios from "axios";
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import type {User} from "../model/User.ts";
 const api =axios.create({
-    baseURL: 'http://localhost:5000/api',
+    baseURL: 'http://localhost:5001/api',
 })
 const initialState = {
     jwt_token: null,
@@ -25,21 +25,16 @@ export const registerUser = createAsyncThunk(
         }
     }
 );
-
 export const loginUser = createAsyncThunk(
-    'login',
-    async (user: User, { rejectWithValue }) => {
-        try {
-            const response = await api.post('/login', user, { withCredentials: true });
-            return response.data;
-        } catch (err: any) {
-            if (err.response) {
-                return rejectWithValue(err.response.data || "Login failed");
-            }
-            return rejectWithValue("Unexpected error during login");
-        }
+    "user/loginUser",
+    async (user: User, thunkAPI) => {
+        const response = await axios.post("http://localhost:5001/api/login", user);
+        const { token } = response.data;
+        localStorage.setItem("token", token);
+        return { token };
     }
 );
+
 const userSlice = createSlice({
     name:"users",
     initialState,
