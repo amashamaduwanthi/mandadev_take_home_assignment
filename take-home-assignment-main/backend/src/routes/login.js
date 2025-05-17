@@ -42,11 +42,8 @@ router.post('/', async (req, res) => {
         name: user.name,
       }
     });
-
-
   } catch (error) {
     res.status(500).json({ message: 'Error during login', error: error.message });
   }
 });
-
 module.exports = router;

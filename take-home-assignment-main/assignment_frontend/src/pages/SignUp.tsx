@@ -1,7 +1,6 @@
 import  { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-
 import { useDispatch } from "react-redux";
 import type {AppDispatch} from "../store/store.ts";
 import type {User} from "../model/User.ts";

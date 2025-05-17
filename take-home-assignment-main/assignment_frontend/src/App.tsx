@@ -7,6 +7,7 @@ import {store} from "./store/store.ts";
 
 import Signup from "./pages/SignUp.tsx";
 import SignIn from "./pages/SignIn.tsx";
+import Dashboard from "./pages/Dashboard.tsx";
 
 function App() {
     const routes=createBrowserRouter([
@@ -16,7 +17,7 @@ function App() {
             children: [
                 { path: "/signin", element: <SignIn /> },
                 { path: "", element: <Signup /> },
-
+                { path: "/Dashboard", element: <Dashboard /> },
             ],
         },
 
