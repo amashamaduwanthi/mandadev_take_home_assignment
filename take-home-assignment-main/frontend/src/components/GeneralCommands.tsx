@@ -2,8 +2,10 @@ import React, {useState} from 'react';
 
 const GeneralCommands: React.FC = () => {
     const [isAutoRegulation, setIsAutoRegulation] = useState(true);
-    const toggleAutoRegulation = () => setIsAutoRegulation((prev) => !prev);
+    const [isSolarPanels, setIsSolarPanels] = useState(true);
 
+    const toggleAutoRegulation = () => setIsAutoRegulation((prev) => !prev);
+    const toggleSolarPanels = () => setIsSolarPanels((prev) => !prev);
     return (
         <div className="w-80 bg-[#1b2c4a] p-6 rounded-xl flex flex-col gap-8 text-white font-sans">
             {/* Thermostat */}
@@ -38,7 +40,43 @@ const GeneralCommands: React.FC = () => {
                 </div>
             </div>
 
+            <div>
+                <h3 className="text-base font-medium mb-2">Energy</h3>
+                <p className="text-sm text-cyan-400 mb-3">CURRENT CONSUMPTION - 12.4 kWh</p>
 
+                {/* Toggle: Solar Panels */}
+                <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm text-gray-300">Solar panels</span>
+                    <button
+                        onClick={toggleSolarPanels}
+                        className={`w-12 h-6 rounded-full flex items-center px-1 transition-colors duration-300 ${
+                            isSolarPanels ? 'bg-cyan-500' : 'bg-gray-500'
+                        }`}
+                    >
+                        <div
+                            className={`w-4 h-4 bg-white rounded-full transition-transform duration-300 ${
+                                isSolarPanels ? 'translate-x-6' : 'translate-x-0'
+                            }`}
+                        />
+                    </button>
+                </div>
+                {/* Toggle: power reserve */}
+                <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm text-gray-300">power reserve</span>
+                    <button
+                        onClick={toggleSolarPanels}
+                        className={`w-12 h-6 rounded-full flex items-center px-1 transition-colors duration-300 ${
+                            isSolarPanels ? 'bg-cyan-500' : 'bg-gray-500'
+                        }`}
+                    >
+                        <div
+                            className={`w-4 h-4 bg-white rounded-full transition-transform duration-300 ${
+                                isSolarPanels ? 'translate-x-6' : 'translate-x-0'
+                            }`}
+                        />
+                    </button>
+                </div>
+            </div>
         </div>
 
     );
