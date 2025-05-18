@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {  FaList } from 'react-icons/fa';
+import {FaDoorClosed, FaLightbulb, FaList, FaUmbrellaBeach, FaVideo} from 'react-icons/fa';
 
 const deviceCategories = [
     { name: 'All', icon: <FaList /> },
@@ -10,9 +10,21 @@ const deviceCategories = [
     { name: 'Home appliances', icon: '🧺' },
     { name: 'Air conditioning', icon: '❄️' },
 ];
+const devices = [
+    { name: 'Entrance camera', status: 'Active', icon: <FaVideo />, category: 'House exterior' },
+    { name: 'Stairs camera', status: 'Deactivated at 22:47', icon: <FaVideo />, category: 'House exterior' },
+    { name: 'Canopies', status: 'Deactivated at 21:00', icon: <FaUmbrellaBeach />, category: 'House exterior' },
+    { name: 'Garage door', status: 'Deactivated at 23:51', icon: <FaDoorClosed />, category: 'House exterior' },
+    { name: 'Parasols', status: 'Deactivated at 21:00', icon: <FaUmbrellaBeach />, category: 'House exterior' },
+    { name: 'Garden lights', status: 'Active', icon: <FaLightbulb />, category: 'Lights' },
+];
 
 const CombinedDeviceSection: React.FC = () => {
     const [selectedCategory, setSelectedCategory] = useState('All');
+    const filteredDevices =
+        selectedCategory === 'All'
+            ? devices
+            : devices.filter(device => device.category === selectedCategory);
 
 
     return (
@@ -54,7 +66,34 @@ const CombinedDeviceSection: React.FC = () => {
                 </div>
 
                 {/* Devices Grid */}
-
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {filteredDevices.length === 0 ? (
+                        <p className="text-gray-400 text-lg">No devices found in this category.</p>
+                    ) : (
+                        filteredDevices.map(device => (
+                            <div
+                                key={device.name}
+                                className={`p-8 rounded-2xl border hover:scale-[1.02] transition-transform duration-200 cursor-pointer shadow-lg flex items-start gap-6 ${
+                                    device.status.includes('Active')
+                                        ? 'border-cyan-400 text-cyan-400 bg-[#213554]'
+                                        : 'border-gray-600 text-gray-400 bg-[#2a3f61]'
+                                }`}
+                            >
+                                <div className="text-4xl">{device.icon}</div>
+                                <div>
+                                    <h3 className="text-lg font-semibold">{device.name}</h3>
+                                    <p className="text-md mt-1">
+                                        {device.status.includes('Active') ? (
+                                            <span className="text-green-400">{device.status}</span>
+                                        ) : (
+                                            <span className="text-red-400">{device.status}</span>
+                                        )}
+                                    </p>
+                                </div>
+                            </div>
+                        ))
+                    )}
+                </div>
 
             </main>
         </div>
