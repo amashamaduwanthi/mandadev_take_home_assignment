@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-import {UserIcon, AtSymbolIcon, IdentificationIcon, CalendarDaysIcon, ClockIcon} from '@heroicons/react/24/outline';
+import { UserIcon, AtSymbolIcon, IdentificationIcon, CalendarDaysIcon, ClockIcon } from '@heroicons/react/24/outline';
 
 interface User {
     id: string;
@@ -14,19 +14,22 @@ const Dashboard: React.FC = () => {
     const [user, setUser] = useState<User | null>(null);
     const [error, setError] = useState<string>('');
     const [currentDate, setCurrentDate] = useState<Date>(new Date());
+    const [nameInput, setNameInput] = useState('');
+    const [emailInput, setEmailInput] = useState('');
 
     const token = localStorage.getItem('token');
 
     useEffect(() => {
         const fetchAccount = async () => {
             try {
-                const response = await axios.get('http://localhost:5001/api/account', {
+                const response = await axios.get('http://localhost:5000/api/account', {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
                 });
-
                 setUser(response.data.user);
+                setNameInput(response.data.user.name);
+                setEmailInput(response.data.user.email);
             } catch (err: any) {
                 console.error(err);
                 setError(err.response?.data?.message || 'Something went wrong');
@@ -41,9 +44,47 @@ const Dashboard: React.FC = () => {
         }, 1000);
         return () => clearInterval(interval);
     }, []);
+    // update user
 
-    if (error) return <div className="text-red-600 text-center mt-8 font-semibold"> Error: {error}</div>;
-    if (!user) return <div className="text-center mt-8 text-gray-500"> Loading your dashboard...</div>;
+    const handleUpdate = async () => {
+        try {
+            const response = await axios.put(`http://localhost:5000/api/user/update/${user?.id}`, {
+                name: nameInput,
+                email: emailInput,
+            }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            setUser(response.data.user);
+            alert('User updated successfully!');
+        } catch (err: any) {
+            console.error(err);
+            setError(err.response?.data?.message || 'Failed to update user');
+        }
+    };
+    // delete user
+
+    const handleDelete = async () => {
+        try {
+            await axios.delete(`http://localhost:5000/api/user/delete/${user?.id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            alert('User deleted successfully!');
+            setUser(null);
+        } catch (err: any) {
+            console.error(err);
+            setError(err.response?.data?.message || 'Failed to delete user');
+        }
+    };
+
+    if (error) return <div className="text-red-600 text-center mt-8 font-semibold">Error: {error}</div>;
+    if (!user) return <div className="text-center mt-8 text-gray-500">Loading your dashboard...</div>;
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-200 via-purple-200 to-pink-100 p-4">
@@ -80,11 +121,43 @@ const Dashboard: React.FC = () => {
                             <span><strong>Time:</strong> {currentDate.toLocaleTimeString()}</span>
                         </div>
                     </div>
+
+                    {/* Update Form */}
+                    <div className="mt-6 space-y-3">
+                        <input
+                            type="text"
+                            value={nameInput}
+                            onChange={(e) => setNameInput(e.target.value)}
+                            className="w-full p-2 rounded border"
+                            placeholder="Update name"
+                        />
+                        <input
+                            type="email"
+                            value={emailInput}
+                            onChange={(e) => setEmailInput(e.target.value)}
+                            className="w-full p-2 rounded border"
+                            placeholder="Update email"
+                        />
+                        <div className="flex gap-4">
+                            <button
+                                onClick={handleUpdate}
+                                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+                            >
+                                Update
+                            </button>
+                            <button
+                                onClick={handleDelete}
+                                className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
+                            >
+                                Delete
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
                 {/* Calendar Section */}
                 <div className="bg-white/30 backdrop-blur-md border border-white/40 rounded-3xl shadow-xl p-6 w-full md:w-1/2">
-                    <h3 className="text-lg font-semibold text-gray-800 mb-4 text-center">📅 Calendar</h3>
+                    <h3 className="text-lg font-semibold text-gray-800 mb-4 text-center"> Calendar</h3>
                     <Calendar
                         className="rounded-xl w-full"
                         value={currentDate}
@@ -94,7 +167,6 @@ const Dashboard: React.FC = () => {
             </div>
         </div>
     );
-
 };
 
 export default Dashboard;

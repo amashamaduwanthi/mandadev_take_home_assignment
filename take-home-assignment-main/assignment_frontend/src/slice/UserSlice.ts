@@ -2,7 +2,7 @@ import axios from "axios";
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import type {User} from "../model/User.ts";
 const api =axios.create({
-    baseURL: 'http://localhost:5001/api',
+    baseURL: 'http://localhost:5000/api',
 })
 const initialState = {
     jwt_token: null,
@@ -28,7 +28,7 @@ export const registerUser = createAsyncThunk(
 export const loginUser = createAsyncThunk(
     "user/loginUser",
     async (user: User, thunkAPI) => {
-        const response = await axios.post("http://localhost:5001/api/login", user);
+        const response = await axios.post("http://localhost:5000/api/login", user);
         const { token } = response.data;
         localStorage.setItem("token", token);
         return { token };

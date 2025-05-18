@@ -4,8 +4,9 @@ const cors = require('cors');
 const loginRoutes = require('./routes/login');
 const accountRoutes = require('./routes/account');
 const authRoutes = require('./routes/auth');
+const userRoutes = require('./routes/user');
 const app = express();
-const port = process.env.PORT || 5001;
+const port = process.env.PORT || 5000;
 const connectDB = require('./config/db');
 connectDB();
 
@@ -15,7 +16,7 @@ connectDB();
 app.use(
     cors(
         {
-          origin:'http://localhost:5173',
+          origin:'http://localhost:5176',
           credentials:true,
           methods:['GET','POST','PUT','DELETE'],
           allowedHeaders:['Content-Type', 'Authorization']
@@ -30,6 +31,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/login', loginRoutes);
 app.use('/api/account', accountRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/user',userRoutes)
 
 // Basic route
 app.get('/', (req, res) => {
