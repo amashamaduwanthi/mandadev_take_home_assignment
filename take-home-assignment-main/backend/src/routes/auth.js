@@ -8,11 +8,35 @@ const dbFunctions = require('../db/dbFunctions.js');
 router.post('/register', async (req, res) => {
     try {
         const { name, email, password } = req.body;
+        const errors = {};
+        // Required check
+        if (!name) errors.name = 'Name is required';
+        if (!email) errors.email = 'Email is required';
+        if (!password) errors.password = 'Password is required';
 
-        //  Validate input
-        if (!name || !email || !password) {
-            return res.status(400).json({ message: 'Name, email, and password are required' });
+        // Name validation
+        const nameRegex = /^[A-Za-z\s]{2,50}$/;
+        if (name && !nameRegex.test(name)) {
+            errors.name = 'Name must be 2–50 characters and contain only letters and spaces';
         }
+
+        // Email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (email && !emailRegex.test(email)) {
+            errors.email = 'Invalid email format';
+        }
+
+        // Password validation
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+        if (password && !passwordRegex.test(password)) {
+            errors.password = 'Password must be at least 8 characters long and include uppercase, lowercase, number, and special character';
+        }
+
+        // If any errors, return them
+        if (Object.keys(errors).length > 0) {
+            return res.status(400).json({ message: 'Invalid input fields', errors });
+        }
+
 
         // Check if user already exists
         const existingUser = await dbFunctions.findUserByEmail(email);

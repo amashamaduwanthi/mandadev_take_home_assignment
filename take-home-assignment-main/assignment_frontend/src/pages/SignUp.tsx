@@ -13,8 +13,13 @@ export default function Signup() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
+    const [errors, setErrors] = useState<{ name?: string; email?: string; password?: string }>({});
+
     const handleRegister = (e) => {
         e.preventDefault();
+
+        setErrors({});
+
         if (!name||!email || !password ) {
             Swal.fire({
                 icon: 'warning',
@@ -25,25 +30,36 @@ export default function Signup() {
             return;
         }
         const user: User = { name:name,email: email, password: password };
-        dispatch(registerUser(user)).then(() => {
-            Swal.fire({
-                icon: 'success',
-                title: 'User Registered!',
-                text: 'The User has been successfully Registered.',
-                confirmButtonColor: '#3085d6',
-            }).then(() => {
-                navigate("/SignIn");
-            });
-        }).catch((error) => {
-            console.error('Error adding User: ', error);
-            Swal.fire({
-                icon: 'error',
-                title: 'Register Failed',
-                text: 'An error occurred while saving the User. Please try again.',
-            });
-        });
-    };
+        dispatch(registerUser(user) as any)
+            .then((res: any) => {
+                // If backend returns validation errors
+                if (res?.payload?.errors) {
+                    setErrors(res.payload.errors);
+                    return;
+                }
 
+                if (res?.error) {
+                    throw new Error(res.error.message || 'Unknown error');
+                }
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'User Registered!',
+                    text: 'The user has been successfully registered.',
+                    confirmButtonColor: '#3085d6',
+                }).then(() => {
+                    navigate("/SignIn");
+                });
+            })
+            .catch((error) => {
+                console.error('Error registering user:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Register Failed',
+                    text: 'An error occurred while registering. Please try again.',
+                });
+            });
+    };
     return (
         <section className="flex items-center justify-center min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-5">
             <div className="flex w-full max-w-5xl bg-white/10 backdrop-blur-xl shadow-2xl rounded-3xl overflow-hidden border border-white/30">
