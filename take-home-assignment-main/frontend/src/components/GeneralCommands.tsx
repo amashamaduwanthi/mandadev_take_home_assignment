@@ -77,8 +77,17 @@ const GeneralCommands: React.FC = () => {
                     </button>
                 </div>
             </div>
-        </div>
 
+            {/* Stays */}
+            <div>
+                <h3 className="text-base font-medium mb-3">Stays</h3>
+                {['Kitchen', 'Living room', 'Bedrooms', 'Bath', 'Garden'].map((room) => (
+                    <div key={room} className="text-sm text-gray-400 py-1 border-b border-[#233656] last:border-none">
+                        {room}
+                    </div>
+                ))}
+            </div>
+        </div>
     );
 };
 
