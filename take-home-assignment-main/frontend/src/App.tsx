@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 import Header from './components/Header';
 import DeviceList from "./components/DeviceList.tsx";
 import DevicePanel from "./components/DevicePanel.tsx";
+import GeneralCommands from "./components/GeneralCommands.tsx";
+
 const App: React.FC = () => {
     const [selectedDevice, setSelectedDevice] = useState('House exterior');
     return (
@@ -10,6 +12,7 @@ const App: React.FC = () => {
             <div className="flex gap-6">
                 <DeviceList selected={selectedDevice} onSelect={setSelectedDevice} />
                 <DevicePanel/>
+                <GeneralCommands/>
             </div>
 
         </div>
