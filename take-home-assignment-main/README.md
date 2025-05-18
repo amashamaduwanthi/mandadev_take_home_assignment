@@ -1,66 +1,76 @@
-# Interview Assignmen
-## Frontend Task
 
-### Requirements
-- Recreate the UI shown in the provided image
-- Start with the base template provided tailwind is setup
+## 🚀 Features
 
-### Evaluation Criteria
-- Code organization and structure
-- Component reusability
-- State management implementation
-- UI/UX accuracy
-- Responsive design implementation
-- Code documentation
+### ✅ Frontend
 
-## Backend Task
+- Recreated the given UI using **Tailwind CSS**
+- Clean component structure with reusability
+- State managed using React Hooks
+- Accessibility and UX best practices
+- Organized file structure and comments
 
-### Requirements
-1. **Authentication System**
-   - Create a login route that returns a JWT authentication token
-   - Implement proper password hashing
-   - Include input validation
-   - Return appropriate error messages
+### ✅ Backend
 
-2. **JWT Middleware**
-   - Create a middleware function to verify JWT authentication tokens
-   - Handle token expiration
-   - Implement proper error handling
-   - Secure routes using the middleware
+- Secure **login route** with JWT token return
+- Password hashing using **bcrypt**
+- Middleware to **verify JWT tokens** and handle expiration
+- Input validation using **express-validator**
+- Protected **account route** with proper access control
+- Full error handling and modular route/controller structure
+- Create User,Update User,Delete User 
 
-3. **Protected Account Route**
-   - Create an account route that can only be accessed using a valid JWT token
-   - Implement proper error handling
-   - Return appropriate user data
+---
 
-### Setup Instructions
-1. Use the backend template provided
-2. Install necessary dependencies
-3. Placeholder routes and middleware exists feel free to edit or create more
-4. add comments to explain your code
+## ⚙️ Setup Instructions
 
-### Evaluation Criteria
-- Code organization and structure
-- Security implementation
-- Error handling
-- Code reusability
-- Testing implementation
+### 🔧 Backend
 
-## Submission Guidelines
+1. Navigate to the backend directory:
+   ```bash
+   cd backend
+2. Start the backend server:
+   npm start
 
-1. clone this repository
-3. Implement the required features
-4. Add a detailed README.md explaining your implementation
-5. create public git repo and submit the url 
+### 🔧  Frontend
 
-## Additional Notes
+1. Navigate to the frontend directory:
+   ```bash
+   cd frontend
+2. Start the backend server:
+    npm run dev
 
-- Use proper error handling throughout the application
-- Implement input validation
-- Follow security best practices
-- Add comments to explain complex logic
-- Include setup instructions in your README
+### 🧱 Technologies Used
+### Frontend:
 
-## Questions?
+- React
 
-If you have any questions about the assignment, please contact gauth672@gmail.com 
+- Tailwind CSS
+
+- Vite
+
+### Backend:
+
+- Node.js
+
+- Express.js
+
+- bcrypt
+
+- jsonwebtoken
+
+- express-validator
+
+- dotenv
+
+### 🧠 Purpose of Two implement frontend
+## frontend/
+- This is the UI recreation based on the image provided in the assignment using React + Tailwind CSS. No backend connection.
+
+### assignment_frontend/
+- This is the frontend that implements the login functionality and connects to the backend to retrieve a JWT and display protected account data.
+
+### git clone https://github.com/amashamaduwanthi/mandadev_take_home_assignment.git
+
+
+
+
